@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>User Info</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand" href="/">
+        <img src="/epitech-logo" width="70" height="30" class="d-inline-block align-top" alt="">
+        User Info Panel
+      </a>
+    </nav>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/library">Add Buisness Card</a>
+      <a class="navbar-brand" href="/list_library">Buisness Card</a>
+      <button id="logout" class="btn btn-primary" style="margin-right:1%">Logout</button>
+      <button id="delac" class="btn btn-danger">Delete acount</button>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header" align="center">User Info</div>
+            <div class="card-body">
+                <h4 id="hname" >Name: </h4>
+                <h4 id="hcmpny" >Company: </h4>
+                <h4 id="hemail" >Email: </h4>
+                <h4 id="hpass" >Password: </h4>
+                <h4 id="hphone" >Phone: </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $.post("/get_users", {mode: '0'}, function(data, status) {
+    for(i=0;i<data.length; i++) {
+      let usr = data[i].name;
+      let cmpny = data[i].company;
+      let email = data[i].email;
+      let pass = data[i]. password;
+      let phone = data[i].phone;
+
+      let _name = $('<small></small>').text(usr)
+      let _cmpny = $('<small></small>').text(cmpny)
+      let _email = $('<small></small>').text(email)
+      let _pass = $('<small></small>').text(pass)
+      let _phone = $('<small></small>').text(phone)
+
+      $("#hname").append(_name);
+      $("#hcmpny").append(_cmpny);
+      $("#hemail").append(_email);
+      $("#hpass").append(_pass);
+      $("#hphone").append(_phone);
+
+      $("#logout").click(function() {
+        $.post("/logout", {name: usr}, function(){
+          location.reload()
+        })
+      })
+
+      $("#delac").click(function() {
+        $.post("/deluser", {name: usr}, function(){
+          location.reload()
+        })
+      })
+
+     }
+    });
+});
+</script>

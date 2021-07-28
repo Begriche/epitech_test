@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>List Buisness Card</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand" href="/">
+        <img src="/epitech-logo" width="70" height="30" class="d-inline-block align-top" alt="">
+        Buisness Cards
+      </a>
+    </nav>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">Profile</a>
+      <a class="navbar-brand" href="/library">Add Buisnes Cards</a>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-12">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center">Name</th>
+                  <th scope="col" class="text-center">Company</th>
+                  <th scope="col" class="text-center">Email</th>
+                  <th scope="col" class="text-center">Phone</th>
+                  <th> </th>
+                </tr>
+              </thead>
+              <tbody id="tbod">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $.post("/get_library", {mode: '0'}, function(data, status) {
+    for(i=0;i<data.length; i++) {
+      let usr = data[i].name;
+      let usrid = data[i].user_id
+
+      let tr = $("<tr></tr>")
+      let name = $(`<td class="text-center name"></td>`).text(data[i].name);
+      let cpny = $(`<td class="text-center cpny"></td>`).text(data[i].company)
+      let email = $(`<td class="text-center email"></td>`).text(data[i].email);
+      let phone = $(`<td class="text-center phone"></td>`).text(data[i].phone);
+      let a = $(`<a href="#" class="btn btn-danger btn-sm" role="button"></a>`).text("Delete").attr('id', usr);
+      let btn = $('<td class="text-center"></td>').append(a);
+
+      tr.append(name,cpny, email, phone, btn);
+      $("#tbod").append(tr);
+
+      $('#'+usr).click(function() {
+        console.log("clicked")
+        $.post("/dellibrary", {userd: usrid}, function(){})
+        location.reload()
+      })
+     }
+    });
+});
+</script>
